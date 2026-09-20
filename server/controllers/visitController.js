@@ -1,4 +1,6 @@
 const Visit = require('../models/visit');
+const User = require('../models/user');
+const Location = require('../models/location');
 const ApprovalDecision = require('../models/approvalDecision');
 
 // Create a new visit
@@ -19,6 +21,12 @@ const getAllVisits = async (req, res) => {
 
         const {status,location,page=1, limit=10}= req.query;
         const filter={};
+
+        // FIELD_OFFICER can only view their own visits
+        if (req.user.role === "FIELD_OFFICER") {
+            filter.createdBy = req.user._id;
+        }
+        
         if(status){
             filter.status=status;
         }

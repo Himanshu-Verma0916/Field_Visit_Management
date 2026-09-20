@@ -4,12 +4,12 @@ const {createVisit,getAllVisits,getVisitById,updateVisit,submitVisitForApproval,
 const auth=require("../middleware/authMiddleware");
 const role=require("../middleware/roleMiddleware");
 
-visitRouter.post("/",auth,role("USER"),createVisit);
-visitRouter.get("/",auth,role("ADMIN"),getAllVisits);
-visitRouter.get("/:id",auth,getVisitById);
-visitRouter.put("/:id",auth,role("USER"),updateVisit);
-visitRouter.post("/:id/submit",auth,role("USER"),submitVisitForApproval);
-visitRouter.post("/:id/decide",auth,role("ADMIN"),decideVisit);
-visitRouter.post("/:id/complete",auth,role("USER"),completeVisit);
+visitRouter.post("/createVisit",auth,role("FIELD_OFFICER"),createVisit);
+visitRouter.get("/getAllVisits",auth,role("FIELD_OFFICER","ADMIN","HQ_APPROVER"),getAllVisits);  // we will filterout fieldofficer can view only his visits
+visitRouter.get("/getVisitById/:id",auth,getVisitById);
+visitRouter.put("/updateVisit/:id",auth,role("FIELD_OFFICER"),updateVisit);
+visitRouter.post("/submitVisitForApproval/:id",auth,role("FIELD_OFFICER"),submitVisitForApproval);
+visitRouter.post("/decideVisit/:id",auth,role("ADMIN","HQ_APPROVER"),decideVisit);
+visitRouter.post("/completeVisit/:id",auth,role("FIELD_OFFICER"),completeVisit);
 
 module.exports=visitRouter;

@@ -5,6 +5,6 @@ const role = require('../middleware/roleMiddleware');
 
 const { getSummary } = require('../controllers/summaryController');
 
-summaryRouter.get('/', auth, role('HQ_APPROVER', 'ADMIN'), getSummary);
+summaryRouter.get('/', auth, role('FIELD_OFFICER','HQ_APPROVER', 'ADMIN'), getSummary);
 
 module.exports= summaryRouter;

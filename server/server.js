@@ -12,6 +12,7 @@ const cookieParser = require("cookie-parser");
 const userRouter = require("./routes/authRoutes");
 const visitRouter = require("./routes/visitRoutes");
 const summaryRouter = require("./routes/summaryRoutes");
+const locationRouter = require("./routes/locationRoutes");
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -26,12 +27,19 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(limiter);
 app.use(helmet());
-app.use(cors());
+// app.use(cors());
+app.use(
+    cors({
+        origin: "http://localhost:5173",
+        credentials: true
+    })
+);
 
 // api endpoints
 app.use("/api/users", userRouter);
 app.use("/api/visits",visitRouter);
 app.use("/api/summary",summaryRouter);
+app.use("/api/locations",locationRouter);
 
 app.use("/", (req, res) => {
   res.send("API is running...");
