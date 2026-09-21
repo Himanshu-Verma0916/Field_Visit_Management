@@ -27,10 +27,29 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
 // app.use(cors());
+// app.use(
+//     cors({
+//         origin: "http://localhost:5173",
+//         credentials: true
+//     })
+// );
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://field-visit-management-utvw.vercel.app"
+];
+
 app.use(
     cors({
-        origin: "http://localhost:5173",
-        credentials: true
+        origin(origin, callback) {
+            if (!origin) return callback(null, true);
+
+            if (allowedOrigins.includes(origin)) {
+                callback(null, true);
+            } else {
+                callback(new Error("Not allowed by CORS"));
+            }
+        },
+        credentials: true,
     })
 );
 
