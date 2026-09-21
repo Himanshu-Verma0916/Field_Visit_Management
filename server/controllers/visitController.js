@@ -148,7 +148,16 @@ const decideVisit = async (req, res) => {
         if (!["APPROVED", "REJECTED"].includes(decision)) {
             return res.status(400).json({ message: 'Decision must be either APPROVED or REJECTED' });
         }
-
+        
+        if (
+            req.user.role === "HQ_APPROVER" &&
+            decision === "REJECTED"
+        ) {
+            return res.status(403).json({
+                message: "HQ Approver can only approve visits"
+            });
+        }
+        
         if (decision === "REJECTED" && (!remark || remark.trim() === "")) {
             return res.status(400).json({
                 message: "Remark is required when rejecting a visit"

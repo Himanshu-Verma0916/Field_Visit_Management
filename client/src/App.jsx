@@ -21,6 +21,7 @@ import VerifyPassword from "./pages/VerifyPassword";
 import UpdatePassword from "./pages/UpdatePassword";
 import Setting from "./pages/Setting";
 import { useAuth } from "./context/AuthContext";
+import Approvals from "./pages/Approvals";
 
 
 const App = () => {
@@ -86,111 +87,25 @@ const App = () => {
                         <Routes>
 
                             {/* Dashboard */}
-                            <Route
-                                path="/"
-                                element={
-                                    user
-                                        ? <Dashboard />
-                                        : <Navigate to="/login" replace />
-                                }
-                            />
-
-
+                            <Route path="/" element={user ? <Dashboard /> : <Navigate to="/login" replace />} />
                             {/* Authentication */}
-                            <Route
-                                path="/login"
-                                element={
-                                    user
-                                        ? <Navigate to="/" replace />
-                                        : <Login />
-                                }
-                            />
-
-                            <Route
-                                path="/register"
-                                element={
-                                    user
-                                        ? <Navigate to="/" replace />
-                                        : <Register />
-                                }
-                            />
-
-
+                            <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
+                            <Route path="/register" element={user ? <Navigate to="/" replace /> : <Register />} />
                             {/* Profile */}
-                            <Route
-                                path="/profile"
-                                element={
-                                    user
-                                        ? <MyProfile />
-                                        : <Navigate to="/login" replace />
-                                }
-                            />
-
-
+                            <Route path="/profile" element={user ? <MyProfile /> : <Navigate to="/login" replace />} />
                             {/* Password Reset */}
-                            <Route
-                                path="/forgotPassword"
-                                element={<ForgotPassword />}
-                            />
-
-                            <Route
-                                path="/verifyPassword"
-                                element={<VerifyPassword />}
-                            />
-
-                            <Route
-                                path="/updatePassword"
-                                element={<UpdatePassword />}
-                            />
-
-
+                            <Route path="/forgotPassword" element={<ForgotPassword />} />
+                            <Route path="/verifyPassword" element={<VerifyPassword />} />
+                            <Route path="/updatePassword" element={<UpdatePassword />} />
                             {/* Visits */}
-                            <Route
-                                path="/getAllVisits"
-                                element={
-                                    user
-                                        ? <Visits />
-                                        : <Navigate to="/login" replace />
-                                }
-                            />
-
-                            <Route
-                                path="/createVisit"
-                                element={
-                                    user
-                                        ? <CreateVisit />
-                                        : <Navigate to="/login" replace />
-                                }
-                            />
-
-                            <Route
-                                path="/getVisitById/:id"
-                                element={
-                                    user
-                                        ? <VisitDetails />
-                                        : <Navigate to="/login" replace />
-                                }
-                            />
-
-
+                            <Route path="/getAllVisits" element={user ? <Visits /> : <Navigate to="/login" replace />} />
+                            <Route path="/createVisit" element={user ? <CreateVisit /> : <Navigate to="/login" replace />} />
+                            <Route path="/getVisitById/:id" element={user ? <VisitDetails /> : <Navigate to="/login" replace />} />
                             {/* Summary */}
-                            <Route
-                                path="/summary"
-                                element={
-                                    user
-                                        ? <Summary />
-                                        : <Navigate to="/login" replace />
-                                }
-                            />
+                            <Route path="/summary" element={user ? <Summary /> : <Navigate to="/login" replace />} />
+                            <Route path="/setting" element={user ? <Setting /> : <Navigate to="/login" replace />} />
+                            <Route path="/approvals" element={user ? <Approvals /> : <Navigate to="/login" replace />} />
 
-                            <Route
-                                path="/setting"
-                                element={
-                                    user
-                                        ? <Setting />
-                                        : <Navigate to="/login" replace />
-                                }
-                            />
 
                         </Routes>
 

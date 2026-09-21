@@ -1,26 +1,31 @@
-import {LayoutDashboard,MapPin,PlusCircle,CheckCircle,BarChart3,Settings,LogOut} from "lucide-react";
+import { LayoutDashboard, MapPin, PlusCircle, CheckCircle, BarChart3, Settings, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import {useAuth} from '../context/AuthContext';
-import {toast} from 'react-toastify';
+import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
-const Sidebar = () => {
-    const navigate= useNavigate();
-    const {user, logout}= useAuth();
+const Sidebar = ({ sidebar, setSidebar }) => {
+    const navigate = useNavigate();
+    const { user, logout } = useAuth();
 
-    const handleLogout=async()=>{
-        try{
+    const handleLogout = async () => {
+        try {
             await logout();
-            toast.success(`${user.name} is logged out successfully` );
+            toast.success(`${user.name} is logged out successfully`);
 
-        }catch(error){
+        } catch (error) {
             console.log(error.message || "Failed to Logout");
             toast.error(error.message || "Failed to Logout")
         }
 
     }
     return (
-        <aside className="hidden lg:flex w-64  bg-slate-900 text-white flex-col">
-
+        <aside
+            className={`fixed lg:static top-16 lg:top-0 bottom-0 left-0 z-40
+        w-64 bg-slate-900 text-white flex flex-col
+        transform transition-transform duration-300 ease-in-out
+        ${sidebar ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+    `}
+        >
             {/* Logo / Brand */}
             <div className="h-16 px-6 flex items-center border-b border-slate-800">
                 <div className="flex items-center gap-3">
@@ -56,7 +61,7 @@ const Sidebar = () => {
                 <div className="space-y-1">
 
                     {/* Dashboard */}
-                    <button onClick={()=>navigate('/')}
+                    <button onClick={() => { navigate('/'); setSidebar(false) }}
                         className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-600 text-white transition-all duration-200 ease-in-out hover:scale-105"
                     >
                         <LayoutDashboard size={19} />
@@ -68,19 +73,25 @@ const Sidebar = () => {
 
 
                     {/* My Visits */}
-                    <button onClick={()=>navigate('/getAllVisits')}
+                    <button onClick={() => { navigate('/getAllVisits'); setSidebar(false) }}
                         className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-all duration-200 ease-in-out focus:bg-slate-700"
                     >
                         <MapPin size={19} />
 
                         <span className="text-sm font-medium">
-                            My Visits
+                            {user?.role === "FIELD_OFFICER" ? "My Visits" : "All Visits"}
                         </span>
+
                     </button>
 
 
                     {/* Create Visit */}
-                    <button onClick={()=>navigate('/createVisit')}
+                    <button
+                        onClick={() => {
+                            user?.role === "FIELD_OFFICER"
+                                ? (navigate('/createVisit'), setSidebar(false))
+                                : toast.info("Only FieldOfficer can create visit");
+                        }}
                         className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-all duration-200 ease-in-out focus:bg-slate-700"
                     >
                         <PlusCircle size={19} />
@@ -101,8 +112,8 @@ const Sidebar = () => {
                 <div className="space-y-1">
 
                     {/* Approvals */}
-                    <button
-                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-all duration-200 ease-in-out"
+                    <button onClick={() => { navigate("/approvals"); setSidebar(false) }}
+                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-all duration-200 ease-in-out focus:bg-slate-700"
                     >
                         <CheckCircle size={19} />
 
@@ -113,8 +124,8 @@ const Sidebar = () => {
 
 
                     {/* Summary */}
-                    <button
-                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-all duration-200 ease-in-out"
+                    <button onClick={() => { navigate("/summary"); setSidebar(false) }}
+                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-all duration-200 ease-in-out focus:bg-slate-700"
                     >
                         <BarChart3 size={19} />
 
@@ -132,8 +143,8 @@ const Sidebar = () => {
             <div className="px-3 py-4 border-t border-slate-800">
 
                 {/* Settings */}
-                <button onClick={()=>navigate('/setting')}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-all duration-200 ease-in-out"
+                <button onClick={() => { navigate('/setting'); setSidebar(false) }}
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-all duration-200 ease-in-out focus:bg-slate-700"
                 >
                     <Settings size={19} />
 
@@ -144,8 +155,8 @@ const Sidebar = () => {
 
 
                 {/* Logout */}
-                <button onClick={handleLogout}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 mt-1 rounded-lg text-slate-300 hover:bg-red-500/10 hover:text-red-400 transition-all duration-200 ease-in-out"
+                <button onClick={() => { handleLogout(); setSidebar(false) }}
+                    className="w-full flex items-center gap-3 px-3 py-2.5 mt-1 rounded-lg text-slate-300 hover:bg-red-500/10 hover:text-red-400 transition-all duration-200 ease-in-out focus:bg-slate-700"
                 >
                     <LogOut size={19} />
 

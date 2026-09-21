@@ -25,7 +25,6 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(limiter);
 app.use(helmet());
 // app.use(cors());
 app.use(
@@ -34,6 +33,8 @@ app.use(
         credentials: true
     })
 );
+
+app.use(limiter);
 
 // api endpoints
 app.use("/api/users", userRouter);
