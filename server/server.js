@@ -1,8 +1,8 @@
 const dotenv = require("dotenv");
 dotenv.config();
-
 const express = require("express");
 const connectDB = require("./config/db");
+connectDB();
 
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
@@ -46,8 +46,11 @@ app.use("/", (req, res) => {
   res.send("API is running...");
 });
 
-connectDB();
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, (err) => {
+        console.log(`server is running on port ${PORT}`);
+    });
+}
+
+module.exports =app;
