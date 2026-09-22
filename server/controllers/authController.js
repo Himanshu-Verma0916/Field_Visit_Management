@@ -48,7 +48,7 @@ const registerUser = async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-            sameSite: "strict",
+            sameSite: "none",
             maxAge: 60 * 60 * 1000   // 1 hour
         });
 
@@ -79,7 +79,7 @@ const loginUser = async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
+            sameSite: "none",
             maxAge: 60 * 60 * 1000   // 1 hour
         });
         res.json({ message: "User logged in successfully", user: { id: user._id, name: user.name, email: user.email, role: user.role } });
@@ -105,7 +105,7 @@ const logoutUser = async (req, res) => {
         res.clearCookie("token", {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict"
+            sameSite: "none"
         });
 
         res.status(200).json({
@@ -217,7 +217,7 @@ const verifyPassword =async(req,res)=>{
         res.cookie("passwordResetToken", resetToken,{
             httpOnly:true,
             secure:process.env.NODE_ENV==="production",
-            sameSite:"strict",
+            sameSite:"none",
             maxAge: 10 *60 *1000
         });
 
@@ -289,7 +289,7 @@ const updateLogin = async (req, res) => {
         res.clearCookie("passwordResetToken", {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict"
+            sameSite: "none"
         });
 
         res.status(200).json({
