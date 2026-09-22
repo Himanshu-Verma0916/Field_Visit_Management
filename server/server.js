@@ -35,7 +35,7 @@ app.use(helmet());
 // );
 const allowedOrigins = [
     "http://localhost:5173",
-    "https://field-visit-management-utvw.vercel.app"
+    "https://field-visit-management-project.vercel.app"
 ];
 
 app.use(
